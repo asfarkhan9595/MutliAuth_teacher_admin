@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+
 
 class StudentController extends Controller
 {
@@ -64,4 +66,11 @@ class StudentController extends Controller
         // Display the list of students in the view
         return view('students.index', ['students' => $students]);
     }
+
+    public function destroy($id)
+    {
+        Student::destroy($id);
+        return redirect()->route('students.index')->with('success', 'Student deleted successfully');
+    }
 }
+

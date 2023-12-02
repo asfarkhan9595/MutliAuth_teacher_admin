@@ -9,4 +9,10 @@ class Student extends Model
 {
     use HasFactory;
     protected $fillable = ['name', 'email', 'class', 'teacher_id'];
+
+    // Student model
+    public function teacher()
+    {
+        return $this->belongsTo(User::class, 'teacher_id');
+    }
 }

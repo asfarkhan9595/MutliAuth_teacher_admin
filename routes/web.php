@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TeacherDashboardController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +20,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 // routes/web.php
-
 // Public routes accessible to all
 Route::get("/", [RegisterController::class, "index"])->name("register.form");
 Route::post("/", [RegisterController::class, "register"])->name("register.post");
@@ -29,31 +29,21 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 // Authenticated routes
 Route::middleware(['auth'])->group(function () {
-
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Common authenticated routes
     Route::middleware(['role:admin'])->group(function () {
-        Route::get('/admin-dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-        // Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
-        // Route::post('/students/store', [StudentController::class, 'store'])->name('students.store');
-        // Route::get('/students', [StudentController::class, 'index'])->name('students.index');
+        Route::get('/admin-dashboard', [UserController::class, 'dashboardAdmin'])->name('admin.dashboard');
     });
 
     Route::middleware(['role:teacher'])->group(function () {
-        Route::get('/teacher-dashboard', [TeacherDashboardController::class, 'index'])->name('teacher.dashboard');
-        // Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
-        // Route::post('/students/store', [StudentController::class, 'store'])->name('students.store');
-        // Route::get('/students', [StudentController::class, 'index'])->name('students.index');
+        Route::get('/teacher-dashboard', [UserController::class, 'dashboardTeacher'])->name('teacher.dashboard');    
     });
 
-    Route::middleware(['role:admin|teacher'])->group(function () {
-       
-    });
-
+    // Student routes
+    Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
+    Route::post('/students/store', [StudentController::class, 'store'])->name('students.store');
+    Route::get('/students', [StudentController::class, 'index'])->name('students.index');
+    Route::delete('/student/{id}/delete', [StudentController::class, 'destroy'])->name('students.destroy');
 });
-
-Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
-Route::post('/students/store', [StudentController::class, 'store'])->name('students.store');
-Route::get('/students', [StudentController::class, 'index'])->name('students.index');

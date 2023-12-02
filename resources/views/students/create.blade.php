@@ -11,46 +11,15 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Admin Dashboard</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ route('students.index') }}">All Student</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ route('students.create') }}">Add Student</a>
-              </li>
-            </ul>
-
-            <ul class="navbar-nav ms-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="{{ route('register.form') }}"> @auth
-                  <form method="POST" action="{{ route('logout') }}">
-                      @csrf
-                      <button type="submit">Logout</button>
-                  </form>
-              @else
-                  {{-- Add login link or button --}}
-              @endauth</a>
-            </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    @if(session('success'))
-        <p style="color: green;">{{ session('success') }}</p>
-    @endif
+   @include('layouts.navbar');
+   @if(session('success'))
+   <div class="container mt-4">
+    <p style="color: green;">{{ session('success') }}</p>
+</div>
+@endif
 <div class="container mt-4">
    
-
+ 
     <form method="POST" action="{{ route('students.store') }}">
         @csrf
         <label for="name">Name:</label>
